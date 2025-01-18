@@ -1,0 +1,72 @@
+-- CREATE OR REPLACE VIEW HOMEWORK13 AS
+/*SELECT Col1, Col2
+FROM FIRSTATTEMPT;
+
+SELECT view_name, text
+FROM USER_VIEWS
+WHERE view_name = 'HOMEWORK13';
+
+
+CREATE OR REPLACE VIEW REORDERINFO AS
+SELECT 
+    b.BOOK_ID AS ISBN,
+    b.TITLE,
+    p.CONTACT_PERSON AS CONTACT,
+    p.PHONE
+FROM 
+    BOOKS b
+JOIN 
+    PUBLISHER p
+USING 
+    (PUBLISHER_ID);
+
+SELECT * FROM REORDERINFO;
+
+
+
+CREATE OR REPLACE TRIGGER update_contact
+INSTEAD OF UPDATE ON REORDERINFO
+FOR EACH ROW
+BEGIN
+  UPDATE PUBLISHER
+  SET CONTACT_PERSON = :NEW.CONTACT
+  WHERE PUBLISHER_ID = (SELECT PUBLISHER_ID FROM BOOKS WHERE TITLE = :NEW.TITLE);
+END;
+
+
+
+UPDATE BOOKS
+SET BOOK_ID = 'NEW_ISBN_VALUE'
+WHERE UPPER(TITLE) = UPPER('Sample Book');
+
+SELECT BOOK_ID FROM BOOKS WHERE TITLE = 'Sample Book';
+
+*/
+
+-- Check if the table 'BOOKS' exists before proceeding
+SELECT table_name
+FROM all_tables
+WHERE table_name = 'BOOKS';
+
+-- If 'BOOKS' table exists, create or replace the trigger
+CREATE OR REPLACE TRIGGER update_contact
+BEFORE INSERT OR UPDATE ON BOOKS
+FOR EACH ROW
+BEGIN
+    -- Trigger logic: Update contact information here if needed
+    -- Example: Set a default contact number if it is not provided
+    IF :NEW.CONTACT IS NULL THEN
+        :NEW.CONTACT := 'Default Contact Number';
+    END IF;
+END;
+/
+
+ROLLBACK;
+SELECT * FROM ALL_VIEWS WHERE VIEW_NAME = 'REORDERINFO';
+SELECT * FROM USER_VIEWS WHERE VIEW_NAME = 'REORDERINFO';
+DROP VIEW REORDERINFO;
+
+
+
+
+prompt Jalu chaudhary
